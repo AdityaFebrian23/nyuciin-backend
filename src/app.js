@@ -1,21 +1,21 @@
 const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
-const os = require('os'); // 📡 untuk deteksi IP otomatis
+const os = require('os');
 
-const authRoutes = require('./routes/auth.routes');
-const userRoutes = require('./routes/user.routes');
-const laundryRoutes = require('./routes/laundry.routes');
-const orderRoutes = require('./routes/order.routes');
-const paymentRoutes = require('./routes/payment.routes');
-const adminRoutes = require('./routes/admin.routes');
+const authRoutes = require('../routes/auth.routes');
+const userRoutes = require('../routes/user.routes');
+const laundryRoutes = require('../routes/laundry.routes');
+const orderRoutes = require('../routes/order.routes');
+const paymentRoutes = require('../routes/payment.routes');
+const adminRoutes = require('../routes/admin.routes');
 
-const errorHandler = require('./middleware/error.middleware');
+const errorHandler = require('../middleware/error.middleware');
 
 const app = express();
 
 /* -------------------------------------------------------------------------- */
-/* 🔍 Deteksi otomatis IP LAN                                                 */
+/* 🌐 Deteksi otomatis IP LAN                                                 */
 /* -------------------------------------------------------------------------- */
 function getLocalIP() {
   const nets = os.networkInterfaces();
@@ -35,25 +35,27 @@ console.log(`🌐 Detected local IP: ${LOCAL_IP}`);
 /* -------------------------------------------------------------------------- */
 /* 🧩 CORS Setup — otomatis izinkan localhost & IP LAN                        */
 /* -------------------------------------------------------------------------- */
-app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin) return callback(null, true);
-    if (
-      origin.startsWith('http://localhost:') ||
-      origin.startsWith('http://127.0.0.1:') ||
-      origin.startsWith(`http://${LOCAL_IP}`)
-    ) {
-      return callback(null, true);
-    }
-    console.log('❌ Blocked CORS origin:', origin);
-    return callback(new Error('CORS not allowed'), false);
-  },
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true);
+      if (
+        origin.startsWith('http://localhost:') ||
+        origin.startsWith('http://127.0.0.1:') ||
+        origin.startsWith(`http://${LOCAL_IP}`)
+      ) {
+        return callback(null, true);
+      }
+      console.log('❌ Blocked CORS origin:', origin);
+      return callback(new Error('CORS not allowed'), false);
+    },
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
+  })
+);
 
-// supaya preflight (OPTIONS) tidak error
+// Supaya preflight (OPTIONS) tidak error
 app.options('*', cors());
 
 /* -------------------------------------------------------------------------- */
@@ -79,7 +81,7 @@ app.get('/', (req, res) => {
   res.json({
     ok: true,
     ip: LOCAL_IP,
-    message: `🧺 NYUCIIN backend running successfully on http://${LOCAL_IP}:4000`,
+    message: `🧺 NYUCIIN backend running successfully on http://${LOCAL_IP}:${process.env.PORT || 4000}`,
   });
 });
 
@@ -88,4 +90,4 @@ app.get('/', (req, res) => {
 /* -------------------------------------------------------------------------- */
 app.use(errorHandler);
 
-module.exports = app;
+module.exports = { app, LOCAL_IP };
