@@ -1,0 +1,47 @@
+[
+  {
+    "_id": {
+      "$oid": "671ff0020000000000000001"
+    },
+    "owner": {
+      "$oid": "671ff0010000000000000002"
+    },
+    "name": "Laundry Bersih & Wangi",
+    "description": "Cuci kiloan, setrika, express 2 jam",
+    "address": {
+      "street": "Jl. Kebersihan 12",
+      "city": "Surabaya",
+      "lat": -7.25,
+      "lng": 112.75
+    },
+    "phone": "+628222222222",
+    "images": [],
+    "services": [
+      {
+        "_id": {
+          "$oid": "671ff0020000000000000002"
+        },
+        "name": "Cuci Kiloan",
+        "type": "per_kg",
+        "price": 8000,
+        "duration_minutes": 1440
+      },
+      {
+        "_id": {
+          "$oid": "671ff0020000000000000003"
+        },
+        "name": "Setrika Per-Item",
+        "type": "per_item",
+        "price": 2000,
+        "duration_minutes": 60
+      }
+    ],
+    "price_per_kg_default": 8000,
+    "rating": 4.6,
+    "isVerified": true,
+    "isActive": true,
+    "createdAt": {
+      "$date": "2025-10-29T00:00:00Z"
+    }
+  }
+]

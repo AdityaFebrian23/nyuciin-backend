@@ -1,0 +1,36 @@
+[
+  {
+    "_id": {
+      "$oid": "671ff0030000000000000001"
+    },
+    "user": {
+      "$oid": "671ff0010000000000000004"
+    },
+    "laundry": {
+      "$oid": "671ff0020000000000000001"
+    },
+    "items": [
+      {
+        "serviceId": {
+          "$oid": "671ff0020000000000000002"
+        },
+        "name": "Cuci Kiloan",
+        "type": "per_kg",
+        "price": 8000,
+        "qty": 3
+      }
+    ],
+    "weight_kg": 3,
+    "subtotal": 24000,
+    "shipping_fee": 10000,
+    "total": 34000,
+    "pickup_time": {
+      "$date": "2025-10-30T07:00:00Z"
+    },
+    "status": "created",
+    "paymentMethod": "midtrans",
+    "createdAt": {
+      "$date": "2025-10-29T00:00:00Z"
+    }
+  }
+]

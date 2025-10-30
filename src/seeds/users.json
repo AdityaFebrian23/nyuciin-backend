@@ -1,0 +1,65 @@
+[
+  {
+    "_id": {
+      "$oid": "671ff0010000000000000001"
+    },
+    "name": "Super Admin",
+    "email": "superadmin@nyuciin.com",
+    "phone": "+628000000001",
+    "password": "$2a$10$A9gkfaQWQ4q9MCs5/Ea3CuR/jeo20dZL4y3jXcyIFRJ5pEibfqMBa",
+    "role": "superadmin",
+    "wallet": 0,
+    "createdAt": {
+      "$date": "2025-10-29T00:00:00Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "671ff0010000000000000002"
+    },
+    "name": "Admin Laundry A",
+    "email": "admin@laundrya.com",
+    "phone": "+628111111111",
+    "password": "$2a$10$7q.SaWWbnQ5m6rbrYjLShux3xZK8aM3gG7xyZwSV6Oba7qAEy0eGq",
+    "role": "admin_laundry",
+    "createdAt": {
+      "$date": "2025-10-29T00:00:00Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "671ff0010000000000000003"
+    },
+    "name": "Petugas Laundry 1",
+    "email": "petugas1@laundrya.com",
+    "phone": "+628222222222",
+    "password": "$2a$10$RkN5Ouxxwh5BpnrA4rOeqeq3c0bYq0DsF9Yo/.P8QOvWKhFufZm2K",
+    "role": "petugas",
+    "createdAt": {
+      "$date": "2025-10-29T00:00:00Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "671ff0010000000000000004"
+    },
+    "name": "User Pelanggan",
+    "email": "user@nyuciin.com",
+    "phone": "+628333333333",
+    "password": "$2a$10$zM2blzTGpxvQmR0d4DyaF.sAkE0UzEugr3svIDk14Uf.bYoH3GLO6",
+    "role": "user",
+    "addresses": [
+      {
+        "label": "Rumah",
+        "street": "Jl. Contoh No 1",
+        "city": "Surabaya",
+        "lat": -7.2575,
+        "lng": 112.7521
+      }
+    ],
+    "wallet": 50000,
+    "createdAt": {
+      "$date": "2025-10-29T00:00:00Z"
+    }
+  }
+]
