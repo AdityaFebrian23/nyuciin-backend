@@ -1,7 +1,7 @@
 require('dotenv').config();
 const http = require('http');
-const { app, LOCAL_IP } = require('./app');
-const { connectDB } = require('../config/db');
+const { app, LOCAL_IP } = require('./app'); // ✅ perbaikan path
+const { connectDB } = require('../src/config/db'); // ✅ pastikan folder bernama "config"
 const { Server } = require('socket.io');
 
 const PORT = process.env.PORT || 5000;
