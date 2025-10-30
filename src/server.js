@@ -5,7 +5,7 @@ const { connectDB } = require('../config/db');
 const { Server } = require('socket.io');
 
 const PORT = process.env.PORT || 5000;
-const HOST = process.env.HOST || '0.0.0.0'; // 🔄 gunakan 0.0.0.0 agar bisa diakses dari jaringan manapun
+const HOST = process.env.HOST || '0.0.0.0'; // harus 0.0.0.0 agar bisa diakses publik
 
 async function start() {
   try {
@@ -22,6 +22,7 @@ async function start() {
           'http://localhost:5000',
           `http://${LOCAL_IP}:5000`,
           `http://${LOCAL_IP}:5173`,
+          /\.onrender\.com$/, // izinkan akses dari domain render
         ],
         methods: ['GET', 'POST'],
         credentials: true,
@@ -52,7 +53,7 @@ async function start() {
     });
 
     /* ---------------------------------------------------------------------- */
-    /* 🚀 Jalankan Server                                                    */
+    /* 🚀 Jalankan Server                                                     */
     /* ---------------------------------------------------------------------- */
     server.listen(PORT, HOST, () => {
       console.log(`✅ Server running at: http://${LOCAL_IP}:${PORT}`);

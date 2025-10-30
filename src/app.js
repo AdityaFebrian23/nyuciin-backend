@@ -15,16 +15,20 @@ const errorHandler = require('../middleware/error.middleware');
 const app = express();
 
 /* -------------------------------------------------------------------------- */
-/* 🌐 Deteksi otomatis IP LAN                                                 */
+/* 🌐 Deteksi otomatis IP LAN (fallback ke localhost di Render)               */
 /* -------------------------------------------------------------------------- */
 function getLocalIP() {
-  const nets = os.networkInterfaces();
-  for (const name of Object.keys(nets)) {
-    for (const net of nets[name]) {
-      if (net.family === 'IPv4' && !net.internal) {
-        return net.address;
+  try {
+    const nets = os.networkInterfaces();
+    for (const name of Object.keys(nets)) {
+      for (const net of nets[name]) {
+        if (net.family === 'IPv4' && !net.internal) {
+          return net.address;
+        }
       }
     }
+  } catch {
+    // Render environment kadang tidak punya networkInterfaces
   }
   return 'localhost';
 }
@@ -33,19 +37,24 @@ const LOCAL_IP = getLocalIP();
 console.log(`🌐 Detected local IP: ${LOCAL_IP}`);
 
 /* -------------------------------------------------------------------------- */
-/* 🧩 CORS Setup — otomatis izinkan localhost & IP LAN                        */
+/* 🧩 CORS Setup — izinkan localhost, IP LAN, dan domain Render               */
 /* -------------------------------------------------------------------------- */
 app.use(
   cors({
     origin: function (origin, callback) {
       if (!origin) return callback(null, true);
-      if (
-        origin.startsWith('http://localhost:') ||
-        origin.startsWith('http://127.0.0.1:') ||
-        origin.startsWith(`http://${LOCAL_IP}`)
-      ) {
+      const allowed = [
+        `http://localhost:5173`,
+        `http://localhost:5000`,
+        `http://${LOCAL_IP}:5173`,
+        `http://${LOCAL_IP}:5000`,
+        /\.onrender\.com$/, // izinkan domain render otomatis
+      ];
+
+      if (allowed.some((rule) => rule instanceof RegExp ? rule.test(origin) : origin.startsWith(rule))) {
         return callback(null, true);
       }
+
       console.log('❌ Blocked CORS origin:', origin);
       return callback(new Error('CORS not allowed'), false);
     },
