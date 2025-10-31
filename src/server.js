@@ -1,11 +1,14 @@
 require('dotenv').config();
 const http = require('http');
-const { app, LOCAL_IP } = require('./app'); // ✅ perbaikan path
-const { connectDB } = require('../src/config/db'); // ✅ pastikan folder bernama "config"
+const { app, LOCAL_IP } = require('./app');
+const { connectDB } = require('./config/db'); // ⬅️ perbaikan path
 const { Server } = require('socket.io');
+const laundryRoutes = require('./routes/laundry.routes');
+app.use('/api/laundries', laundryRoutes);
+
 
 const PORT = process.env.PORT || 5000;
-const HOST = process.env.HOST || '0.0.0.0'; // harus 0.0.0.0 agar bisa diakses publik
+const HOST = process.env.HOST || '0.0.0.0';
 
 async function start() {
   try {
@@ -22,7 +25,7 @@ async function start() {
           'http://localhost:5000',
           `http://${LOCAL_IP}:5000`,
           `http://${LOCAL_IP}:5173`,
-          /\.onrender\.com$/, // izinkan akses dari domain render
+          /\.onrender\.com$/, // izinkan domain Render
         ],
         methods: ['GET', 'POST'],
         credentials: true,
@@ -56,7 +59,7 @@ async function start() {
     /* 🚀 Jalankan Server                                                     */
     /* ---------------------------------------------------------------------- */
     server.listen(PORT, HOST, () => {
-      console.log(`✅ Server running at: http://${LOCAL_IP}:${PORT}`);
+      console.log(`✅ Server running at: http://${LOCAL_IP || 'localhost'}:${PORT}`);
     });
   } catch (err) {
     console.error('❌ Failed to start server:', err.message);

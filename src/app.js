@@ -10,7 +10,7 @@ const laundryRoutes = require('./routes/laundry.routes');
 const orderRoutes = require('./routes/order.routes');
 const paymentRoutes = require('./routes/payment.routes');
 const adminRoutes = require('./routes/admin.routes');
-const errorHandler = require('./middleware/error.middleware');
+const errorHandler = require('./middlewares/error.middleware');
 
 const app = express();
 
@@ -31,7 +31,9 @@ console.log(`🌐 Detected local IP: ${LOCAL_IP}`);
 app.use(
   cors({
     origin: (origin, callback) => {
-      if (!origin) return callback(null, true); // izinkan Postman & emulator
+      // izinkan Postman / emulator / request tanpa origin
+      if (!origin) return callback(null, true);
+
       const whitelist = [
         `http://localhost:5173`,
         `http://localhost:5000`,
@@ -40,13 +42,18 @@ app.use(
         `http://127.0.0.1:5173`,
         `http://127.0.0.1:5000`,
         'http://10.0.2.2:5000',
+        'http://10.0.2.2:5173',
+        `http://localhost:53791`, // Flutter web kadang pakai port acak
       ];
 
-      if (whitelist.some((url) => origin.startsWith(url)) || /\.onrender\.com$/.test(origin)) {
+      const allowed =
+        whitelist.some((url) => origin.startsWith(url)) || /\.onrender\.com$/.test(origin);
+
+      if (allowed) {
         callback(null, true);
       } else {
-        console.log('❌ Blocked CORS origin:', origin);
-        callback(new Error('CORS not allowed'));
+        console.log('⚠️  Unlisted origin (allowed temporarily for debug):', origin);
+        callback(null, true); // jangan blokir biar preflight tidak error
       }
     },
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],

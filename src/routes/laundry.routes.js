@@ -1,10 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const laundryCtrl = require('../controllers/laundry.controller');
-const auth = require('../middleware/auth.middleware');
-const { permit } = require('../middleware/role.middleware');
+const laundryController = require('../controllers/laundry.controller');
+const { authMiddleware, superAdminOnly } = require('../middlewares/auth.middleware');
 
-router.post('/', auth, permit('admin_laundry','superadmin'), laundryCtrl.createLaundry);
-router.get('/', laundryCtrl.listNearby);
+// 🔐 Semua route ini khusus untuk Super Admin
+router.post('/', authMiddleware, superAdminOnly, laundryController.createLaundry);
+router.get('/', authMiddleware, superAdminOnly, laundryController.getAllLaundries);
+router.get('/:id', authMiddleware, superAdminOnly, laundryController.getLaundryById);
+router.put('/:id', authMiddleware, superAdminOnly, laundryController.updateLaundry);
+router.delete('/:id', authMiddleware, superAdminOnly, laundryController.deleteLaundry);
 
 module.exports = router;

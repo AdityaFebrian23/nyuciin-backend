@@ -9,9 +9,10 @@ async function connectDB() {
       throw new Error('❌ MONGO_URI tidak ditemukan di file .env');
     }
 
-    // ⚙️ Koneksi ke MongoDB Atlas
+    mongoose.set('strictQuery', true);
+
     await mongoose.connect(uri, {
-      serverSelectionTimeoutMS: 10000, // timeout lebih panjang biar stabil
+      serverSelectionTimeoutMS: 10000,
     });
 
     console.log('✅ MongoDB connected successfully');

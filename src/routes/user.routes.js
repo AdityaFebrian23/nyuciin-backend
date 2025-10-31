@@ -1,9 +1,18 @@
 const express = require('express');
 const router = express.Router();
-const auth = require('../middleware/auth.middleware');
-// placeholder user controller routes
-router.get('/me', auth, async (req, res) => {
-  res.json(req.user);
-});
+const { authMiddleware, superAdminOnly } = require('../middlewares/auth.middleware');
+const userCtrl = require('../controllers/user.controller');
+
+// ✅ Daftar semua user (superadmin only)
+router.get('/', authMiddleware, superAdminOnly, userCtrl.getAllUsers);
+
+// ✅ Ambil satu user
+router.get('/:id', authMiddleware, userCtrl.getUserById);
+
+// ✅ Update user
+router.put('/:id', authMiddleware, userCtrl.updateUser);
+
+// ✅ Hapus user
+router.delete('/:id', authMiddleware, userCtrl.deleteUser);
 
 module.exports = router;
